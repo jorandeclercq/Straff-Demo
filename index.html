@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="nl-BE" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>Straff Outreach Agent — één werkdag van een verkoper</title>
+<style>
+:root{
+  --bg:#F6F4EF;
+  --surface:#FFFFFF;
+  --surface-2:#EEF3F4;
+  --text:#232B2F;
+  --muted:#5A6672;
+  --line:#D9DDD8;
+  --teal:#0E4C5B;
+  --teal-soft:#D8E8EC;
+  --amber:#B96F22;
+  --amber-soft:#F5E6D3;
+  --green:#2E7D5B;
+  --green-soft:#DDF0E6;
+  --red:#A8412F;
+  --red-soft:#F6DED9;
+  --shadow:0 6px 24px rgba(14,76,91,.10);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#13181B;
+    --surface:#1C2327;
+    --surface-2:#232C31;
+    --text:#E8E6E1;
+    --muted:#A3ADB3;
+    --line:#33404A;
+    --teal:#6FB1C2;
+    --teal-soft:#1B3A44;
+    --amber:#D9924A;
+    --amber-soft:#3D2A17;
+    --green:#5EBF92;
+    --green-soft:#1B3A2C;
+    --red:#E07A65;
+    --red-soft:#3F211C;
+    --shadow:0 6px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+header.top{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.9rem 1.5rem;border-block-end:1px solid var(--line);background:var(--surface);
+}
+.brand{display:flex;align-items:center;gap:.75rem;font-weight:700;letter-spacing:.02em}
+.brand .x{color:var(--muted);font-weight:400}
+.brand .straff{color:var(--amber)}
+.brand .fikz{color:var(--teal)}
+.badge{
+  font-size:.75rem;font-weight:600;padding:.25rem .6rem;border-radius:999px;
+  background:var(--amber-soft);color:var(--amber);border:1px solid transparent;white-space:nowrap;
+}
+.badge.teal{background:var(--teal-soft);color:var(--teal)}
+.badge.green{background:var(--green-soft);color:var(--green)}
+.badge.red{background:var(--red-soft);color:var(--red)}
+.badge.grey{background:var(--surface-2);color:var(--muted)}
+nav.steps{
+  display:flex;gap:.35rem;padding:.75rem 1.5rem;overflow-x:auto;background:var(--surface);
+  border-block-end:1px solid var(--line);
+}
+nav.steps button{
+  flex:1 0 auto;min-width:7.5rem;border:1px solid var(--line);background:var(--surface);
+  color:var(--muted);border-radius:10px;padding:.5rem .7rem;cursor:pointer;text-align:start;
+  font:inherit;font-size:.8rem;line-height:1.25;
+}
+nav.steps button .t{display:block;font-weight:700;color:var(--teal);font-size:.72rem;letter-spacing:.04em}
+nav.steps button[aria-current="step"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+nav.steps button[aria-current="step"] .t{color:#fff;opacity:.85}
+nav.steps button.done{border-color:var(--teal);color:var(--text)}
+main{flex:1;padding:1.5rem;max-width:1100px;width:100%;margin:0 auto}
+.scene{display:none;animation:fade .35s ease}
+.scene.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.scene-head{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-block-end:1rem}
+.clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.6rem;color:var(--amber);letter-spacing:.02em}
+.scene-head h2{margin:0;font-size:1.5rem}
+.scene-head p.lead{margin:.25rem 0 0;color:var(--muted);flex-basis:100%}
+.grid{display:grid;gap:1rem}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid.three{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.1rem 1.2rem;box-shadow:var(--shadow);
+}
+.card h3{margin:0 0 .5rem;font-size:1rem;color:var(--teal);text-transform:uppercase;letter-spacing:.06em}
+.card h4{margin:.2rem 0 .4rem;font-size:1.05rem}
+.card p{margin:.35rem 0}
+.card ul{margin:.35rem 0;padding-inline-start:1.1rem}
+.card li{margin:.2rem 0}
+.kv{display:grid;grid-template-columns:minmax(120px,38%) 1fr;gap:.35rem .9rem;font-size:.95rem}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:600}
+.callout{
+  border-inline-start:4px solid var(--amber);background:var(--amber-soft);
+  padding:.8rem 1rem;border-radius:0 10px 10px 0;margin:1rem 0;
+}
+.callout.teal{border-color:var(--teal);background:var(--teal-soft)}
+.callout.green{border-color:var(--green);background:var(--green-soft)}
+.callout strong{display:block;margin-block-end:.2rem}
+.btn{
+  font:inherit;font-weight:700;border:none;border-radius:10px;padding:.7rem 1.1rem;cursor:pointer;
+  background:var(--teal);color:#fff;
+}
+.btn.secondary{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+.btn.amber{background:var(--amber);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-block-start:1rem}
+footer.nav{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  padding:.9rem 1.5rem;border-block-start:1px solid var(--line);background:var(--surface);
+}
+footer.nav .counter{color:var(--muted);font-size:.9rem}
+footer.note{padding:.75rem 1.5rem;font-size:.75rem;color:var(--muted);text-align:center;background:var(--bg)}
+
+/* cover */
+.cover{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:center;min-height:60vh}
+.cover h1{font-size:2.4rem;line-height:1.1;margin:.5rem 0}
+.cover h1 em{color:var(--amber);font-style:normal}
+.cover .kicker{color:var(--teal);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
+.cover .sub{font-size:1.15rem;color:var(--muted)}
+.cover .card ol{padding-inline-start:1.2rem;margin:.4rem 0}
+@media (max-width:820px){.cover{grid-template-columns:1fr}}
+
+/* funnel */
+.funnel{display:flex;gap:.5rem;align-items:stretch;flex-wrap:wrap;margin:0 0 1rem}
+.funnel .stage{flex:1 1 150px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem}
+.funnel .stage .n{font-size:1.4rem;font-weight:800;color:var(--teal)}
+.funnel .stage .l{font-size:.8rem;color:var(--muted)}
+.funnel .arrow{align-self:center;color:var(--muted);font-size:1.3rem}
+
+/* action queue */
+.queue{display:flex;flex-direction:column;gap:.6rem}
+.row{
+  display:grid;grid-template-columns:auto 1fr auto;gap:.9rem;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.75rem 1rem;
+}
+.row .num{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.row .name{font-weight:700}
+.row .why{color:var(--muted);font-size:.92rem}
+.row .action{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;text-align:end}
+.row .when{font-size:.8rem;color:var(--muted)}
+.row.dim{opacity:.72}
+.row.hl{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .5rem;border-radius:999px;margin-inline-end:.3rem;background:var(--teal-soft);color:var(--teal)}
+.chip.amber{background:var(--amber-soft);color:var(--amber)}
+.chip.grey{background:var(--surface-2);color:var(--muted)}
+.chip.red{background:var(--red-soft);color:var(--red)}
+.chip.green{background:var(--green-soft);color:var(--green)}
+
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:.45rem;height:110px;margin:.6rem 0 .2rem}
+.bars .bar{flex:1;background:var(--teal-soft);border-radius:6px 6px 0 0;position:relative;display:flex;align-items:flex-start;justify-content:center}
+.bars .bar.hot{background:var(--amber)}
+.bars .bar span{position:absolute;inset-block-start:-1.4rem;font-size:.75rem;font-weight:700}
+.bars-labels{display:flex;gap:.45rem}
+.bars-labels div{flex:1;text-align:center;font-size:.7rem;color:var(--muted)}
+.threshold{border-block-start:2px dashed var(--red);position:relative;margin-block-start:-95px;margin-block-end:93px;pointer-events:none}
+.threshold span{position:absolute;inset-inline-end:0;inset-block-start:-1.2rem;font-size:.7rem;color:var(--red);font-weight:700}
+
+/* signal */
+.signal{display:grid;grid-template-columns:1fr 1fr;gap:.5rem .9rem;font-size:.92rem}
+.signal div b{display:block;color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+
+/* call */
+.phone{display:flex;flex-direction:column;align-items:center;gap:.8rem;padding:1.2rem}
+.phone .avatar{width:72px;height:72px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.4rem}
+.phone .timer{font-variant-numeric:tabular-nums;color:var(--muted)}
+.voice{background:var(--surface-2);border-radius:12px;padding:1rem;min-height:5.5rem;font-size:1.05rem}
+.voice .cursor{display:inline-block;width:.6ch;background:var(--amber);animation:blink 1s steps(1) infinite;margin-inline-start:2px}
+@keyframes blink{50%{opacity:0}}
+.wave{display:flex;gap:3px;align-items:center;height:28px}
+.wave i{display:block;width:4px;background:var(--amber);border-radius:2px;height:8px}
+.wave.on i{animation:wave .9s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}.wave i:nth-child(4){animation-delay:.3s}
+.wave i:nth-child(5){animation-delay:.4s}.wave i:nth-child(6){animation-delay:.5s}.wave i:nth-child(7){animation-delay:.6s}.wave i:nth-child(8){animation-delay:.7s}
+@keyframes wave{0%,100%{height:8px}50%{height:26px}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+.reveal.in{opacity:1;transform:none}
+.mail{background:var(--surface-2);border-radius:10px;padding:.8rem 1rem;font-size:.92rem}
+.mail .hdr{color:var(--muted);font-size:.8rem;margin-block-end:.4rem}
+.status{font-weight:700;color:var(--green)}
+
+/* learning */
+.trig{display:grid;grid-template-columns:1fr 3fr auto;gap:.6rem 1rem;align-items:center;margin:.35rem 0}
+.trig .lbl{font-weight:700}
+.trig .track{background:var(--surface-2);border-radius:6px;height:14px;overflow:hidden}
+.trig .fill{height:100%;background:var(--teal);border-radius:6px}
+.trig .fill.low{background:var(--red)}
+.trig .pct{font-variant-numeric:tabular-nums;font-weight:700;min-width:8.5rem;text-align:end;font-size:.9rem}
+
+/* compare */
+table.cmp{width:100%;border-collapse:collapse;font-size:.95rem}
+table.cmp th,table.cmp td{padding:.55rem .7rem;border-block-end:1px solid var(--line);text-align:start;vertical-align:top}
+table.cmp th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+table.cmp td:first-child{color:var(--muted)}
+table.cmp td:last-child{font-weight:600}
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem;margin-block-start:.6rem}
+.timeline .ph{background:var(--surface-2);border-radius:10px;padding:.7rem .8rem;font-size:.9rem}
+.timeline .ph b{display:block;color:var(--teal);font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="fikz">FIKz</span><span class="x">×</span><span class="straff">STRAFF</span><span class="x">·</span><span>Outreach Agent</span></div>
+  <span class="badge">Demo · alle bedrijven en cijfers zijn fictief</span>
+</header>
+
+<nav class="steps" aria-label="Stappen">
+  <button type="button" data-step="0"><span class="t">START</span>De werkdag</button>
+  <button type="button" data-step="1"><span class="t">08:30</span>De opdracht</button>
+  <button type="button" data-step="2"><span class="t">08:45</span>De triggers</button>
+  <button type="button" data-step="3"><span class="t">09:30</span>Het dossier</button>
+  <button type="button" data-step="4"><span class="t">09:40</span>Het gesprek</button>
+  <button type="button" data-step="5"><span class="t">09:49</span>De nasleep</button>
+  <button type="button" data-step="6"><span class="t">VRIJDAG 16:00</span>De leerlus</button>
+  <button type="button" data-step="7"><span class="t">EN DAN</span>Wat dit betekent</button>
+</nav>
+
+<main>
+
+<!-- 0 · COVER -->
+<section class="scene active" data-scene="0">
+  <div class="cover">
+    <div>
+      <div class="kicker">Straff Outreach Agent · van belbestand naar trigger</div>
+      <h1>Eén werkdag van een Straff-verkoper. <em>Zonder lijst.</em></h1>
+      <p class="sub">Vandaag bepaalt een lijst wie je mensen bellen. In deze demo bepaalt een trigger — een HR-gebeurtenis bij het bedrijf zelf — wie ze bellen, waarom nú en met welke opening. De Straff Outreach Agent doet al het werk rond het gesprek; jouw mensen doen het gesprek.</p>
+      <div class="btn-row">
+        <button type="button" class="btn amber" data-go="1">Start de werkdag →</button>
+        <button type="button" class="btn secondary" data-go="7">Meteen naar de conclusie</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Wat je gaat zien</h3>
+      <ol>
+        <li><strong>De opdracht</strong> — jouw commerciële keuzes als vertrekpunt</li>
+        <li><strong>De triggers</strong> — bedrijven mét een reden, niet een lijst</li>
+        <li><strong>Het dossier</strong> — HR-hypothese, opening, twee vragen</li>
+        <li><strong>Het gesprek</strong> — mensenwerk, dan twintig seconden notitie</li>
+        <li><strong>De nasleep</strong> — CRM, mail, terugbelmoment: gedaan</li>
+        <li><strong>De leerlus</strong> — wat werkte, en één voorstel</li>
+      </ol>
+      <p style="color:var(--muted);font-size:.85rem;margin-block-start:.6rem">Twee minuten. Gebruik de pijltjestoetsen of de knoppen onderaan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 1 · DE OPDRACHT -->
+<section class="scene" data-scene="1">
+  <div class="scene-head">
+    <span class="clock">08:30</span><h2>De opdracht</h2>
+    <p class="lead">De Straff Outreach Agent vertrekt niet van een lijst, maar van jouw commerciële keuzes en je bestaande diensten. Daarna zoekt hij zelf de trigger: wat gebeurt er bij een bedrijf dat één van die diensten relevant maakt? Eén keer instellen, daarna bijsturen.</p>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>Wat we verkopen, aan wie</h3>
+      <dl class="kv">
+        <dt>Aanbod</dt><dd>HR-consultancy (strategie, rekrutering &amp; retentie) · payroll, o.a. de payroll scan · learning &amp; development — de diensten die Straff vandaag al levert</dd>
+        <dt>Vertrekpunt</dt><dd>Een trigger, geen lijst: de agent zoekt gebeurtenissen die een dienst relevant maken — personeelsdrempel, bestuurswissel, groeispurt — niet bedrijven die aan kenmerken voldoen</dd>
+        <dt>Doelgroep</dt><dd>KMO's van 15 tot 120 medewerkers, Oost- en West-Vlaanderen</dd>
+        <dt>Gekwalificeerde afspraak</dt><dd>Bezoek bij de zaakvoerder of HR-verantwoordelijke, met een concreet HR-vraagstuk</dd>
+        <dt>Databronnen</dt><dd>RSZ-personeelsevolutie · Staatsblad · subsidieregister · vacatures · eigen CRM</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>Grenzen — harde softwarelogica, geen AI</h3>
+      <dl class="kv">
+        <dt>Nooit contacteren</dt><dd>Klanten · lopende trajecten · afgemelde contacten · Bel-me-niet-meer-lijst</dd>
+        <dt>Contactregels</dt><dd>Max. 3 belpogingen per 3 weken · max. 2 mails per traject</dd>
+        <dt>Autonomie</dt><dd>De agent onderzoekt, bereidt voor en stelt voor. Verzenden gebeurt pas na goedkeuring.</dd>
+        <dt>Altijd bij de mens</dt><dd>Prijs · offerte · commerciële toezeggingen · onduidelijke reacties</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="callout teal"><strong>Kort gezegd</strong>De agent verkoopt wat Straff vandaag al verkoopt — alleen zoekt hij de aanleiding zelf, en kent hij de grenzen beter dan een nieuwe medewerker op dag één.</div>
+</section>
+
+<!-- 2 · DE TRIGGERS -->
+<section class="scene" data-scene="2">
+  <div class="scene-head">
+    <span class="clock">08:45</span><h2>De triggers: de actierij van vandaag</h2>
+    <p class="lead">Geen 200 bedrijven om af te werken. De agent kijkt naar wat er bij een bedrijf gebeurt, niet naar waar het op een lijst staat. Negen opdrachten, elk met een reden, een bron en een belvenster — en drie die je vandaag níét doet.</p>
+  </div>
+  <div class="funnel" aria-label="Van alle bedrijven naar de acties van vandaag">
+    <div class="stage"><div class="n">412</div><div class="l">bedrijven in de doelgroep</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="n">37</div><div class="l">met een HR-gebeurtenis deze week</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="n">9</div><div class="l">acties vandaag, in het juiste belvenster</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="n">3</div><div class="l">bewust níét contacteren</div></div>
+  </div>
+  <div class="queue">
+    <div class="row hl">
+      <div class="num">1</div>
+      <div><div class="name">Vandenbroucke Bouw BV · Aalst</div><div class="why"><span class="chip amber">50-drempel</span>Personeel volgens RSZ van 46 naar 53 in twee kwartalen · 4 vacatures open · geen CPBW bekend</div></div>
+      <div class="action"><span class="badge teal">Bellen</span><span class="when">venster di–do · 9u30–11u30</span></div>
+    </div>
+    <div class="row">
+      <div class="num">2</div>
+      <div><div class="name">Delacroix Logistics NV · Kortrijk</div><div class="why"><span class="chip">Bestuurswissel</span>Nieuwe gedelegeerd bestuurder, Staatsblad 2 september · 68 medewerkers</div></div>
+      <div class="action"><span class="badge teal">Bellen</span><span class="when">venster 14u–16u</span></div>
+    </div>
+    <div class="row">
+      <div class="num">3</div>
+      <div><div class="name">Mertens &amp; Zonen Metaal · Deinze</div><div class="why"><span class="chip">Groeispurt</span>+28% personeel in 12 maanden (25 → 32) · sector met zware payroll (PC 111)</div></div>
+      <div class="action"><span class="badge teal">Bellen</span><span class="when">venster 10u–12u</span></div>
+    </div>
+    <div class="row">
+      <div class="num">4</div>
+      <div><div class="name">Groenwerk Peeters BV · Gent</div><div class="why"><span class="chip">Subsidie + groei</span>Groeisubsidie toegekend in juni · 3 vacatures · 19 medewerkers, nadert de 20-drempel</div></div>
+      <div class="action"><span class="badge teal">Bellen</span><span class="when">venster di/do voormiddag</span></div>
+    </div>
+    <div class="row">
+      <div class="num">5</div>
+      <div><div class="name">Atelier Verstraete · Roeselare</div><div class="why"><span class="chip green">Terugbelafspraak</span>Beloofd: "bel me woensdag rond 11u" — notitie van 27 augustus</div></div>
+      <div class="action"><span class="badge green">Terugbellen</span><span class="when">vandaag 11u00</span></div>
+    </div>
+    <div class="row">
+      <div class="num">6</div>
+      <div><div class="name">Ceulemans Zorg BV · Brugge</div><div class="why"><span class="chip">20-drempel nadert</span>18 → 19 medewerkers · nog geen gevalideerd telefoonnummer</div></div>
+      <div class="action"><span class="badge grey">Mail voorbereiden</span><span class="when">ter goedkeuring</span></div>
+    </div>
+    <div class="row dim">
+      <div class="num">—</div>
+      <div><div class="name">Deprez Interieur · Waregem</div><div class="why"><span class="chip grey">Wachten</span>Collega heeft al een gesprek lopen · bezoek gepland op 16 september</div></div>
+      <div class="action"><span class="badge grey">Niet bellen</span><span class="when">loopt al</span></div>
+    </div>
+    <div class="row dim">
+      <div class="num">—</div>
+      <div><div class="name">Van Hoof Transport · Sint-Niklaas</div><div class="why"><span class="chip red">Doof voor HR-diensten</span>Signaal: 4× benaderd in 12 maanden, telkens afgewezen voor HR</div></div>
+      <div class="action"><span class="badge red">Niet bellen</span><span class="when">bespaart een poging</span></div>
+    </div>
+    <div class="row dim">
+      <div class="num">—</div>
+      <div><div class="name">Bakkerij Lammens · Oudenaarde</div><div class="why"><span class="chip red">Bel-me-niet-meer</span>Nummer staat op de lijst · uitsluiting is hard, geen AI-oordeel</div></div>
+      <div class="action"><span class="badge red">Geblokkeerd</span><span class="when">altijd</span></div>
+    </div>
+  </div>
+  <div class="callout"><strong>Kort gezegd</strong>Dit is geen lijst. Dit is jouw HR-kennis die elke ochtend bepaalt wie het waard is om te bellen — en wie niet.</div>
+  <div class="btn-row"><button type="button" class="btn" data-go="3">Open het dossier van Vandenbroucke Bouw →</button></div>
+</section>
+
+<!-- 3 · HET DOSSIER -->
+<section class="scene" data-scene="3">
+  <div class="scene-head">
+    <span class="clock">09:30</span><h2>Het dossier: Vandenbroucke Bouw BV</h2>
+    <p class="lead">Feiten, signaal en hypothese blijven gescheiden. De verkoper leest dit in dertig seconden en klinkt als een HR-expert.</p>
+  </div>
+  <div class="grid three">
+    <div class="card">
+      <h3>Feiten</h3>
+      <dl class="kv">
+        <dt>Bedrijf</dt><dd>Vandenbroucke Bouw BV · Aalst (fictief)</dd>
+        <dt>Sector</dt><dd>Bouw · PC 124</dd>
+        <dt>Zaakvoerder</dt><dd>Sinds 2014, ongewijzigd</dd>
+        <dt>Vacatures</dt><dd>4 open (2 werfleiders, 2 arbeiders)</dd>
+        <dt>CRM</dt><dd>Geen klant · geen lopend traject · nooit eerder gecontacteerd</dd>
+      </dl>
+      <p style="margin-block-start:.8rem;font-size:.85rem;color:var(--muted)">Personeel volgens RSZ, per kwartaal</p>
+      <div class="bars" aria-label="Personeelsevolutie: 44, 45, 46, 46, 49, 53">
+        <div class="bar" style="height:73%"><span>44</span></div>
+        <div class="bar" style="height:75%"><span>45</span></div>
+        <div class="bar" style="height:77%"><span>46</span></div>
+        <div class="bar" style="height:77%"><span>46</span></div>
+        <div class="bar" style="height:82%"><span>49</span></div>
+        <div class="bar hot" style="height:88%"><span>53</span></div>
+      </div>
+      <div class="threshold"><span>drempel 50</span></div>
+      <div class="bars-labels"><div>Q1 25</div><div>Q2 25</div><div>Q3 25</div><div>Q4 25</div><div>Q1 26</div><div>Q2 26</div></div>
+    </div>
+    <div class="card">
+      <h3>Signaal</h3>
+      <div class="signal">
+        <div><b>Bereikbaarheid</b>Hoog · neemt meestal op</div>
+        <div><b>Beste belvenster</b>di–do · 9u30–11u30</div>
+        <div><b>Benaderingsdruk</b>Laag · 1× in 12 maanden</div>
+        <div><b>Openheid voor HR-diensten</b>Niet doof · geen eerdere afwijzing</div>
+        <div><b>Betrouwbaarheid</b>Hoog · recente waarnemingen</div>
+        <div><b>Bron</b>Marktsignaal, bijgewerkt vandaag</div>
+      </div>
+      <div class="callout" style="margin-block-end:0"><strong>Let op</strong>Een signaal is geen koopintentie. Het zegt wanneer je kans maakt op een gesprek — niet dat ze willen kopen.</div>
+    </div>
+    <div class="card">
+      <h3>Hypothese — te toetsen in het gesprek</h3>
+      <p><strong>Groei zonder HR-structuur.</strong> Boven de 50 volgen sociale verkiezingen in 2028, een CPBW, een vertrouwenspersoon en de keuze voor een preventieadviseur. Vier open vacatures in een krappe bouwmarkt wijzen op rekruteringsdruk.</p>
+      <h4>Straff-aanbod</h4>
+      <p>HR-consultancy rond de 50-drempel — overlegorganen, vertrouwenspersoon, arbeidsreglement — met rekrutering &amp; retentie als tweede spoor voor de vier open vacatures.</p>
+      <h4>Opening</h4>
+      <p>"Jullie zijn dit jaar over de 50 medewerkers gegaan — dat brengt een paar verplichtingen mee die de meeste zaakvoerders pas ontdekken als het te laat is."</p>
+      <h4>Twee vragen</h4>
+      <ul>
+        <li>Wie volgt HR vandaag op bij jullie?</li>
+        <li>Hoe loopt de rekrutering voor die vier vacatures?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout teal"><strong>Kort gezegd</strong>Je mensen hoeven niets meer uit te zoeken. Ze bellen met een reden die klopt, op het moment dat het klopt.</div>
+  <div class="btn-row"><button type="button" class="btn amber" data-go="4">Bel nu →</button></div>
+</section>
+
+<!-- 4 · HET GESPREK -->
+<section class="scene" data-scene="4">
+  <div class="scene-head">
+    <span class="clock">09:40</span><h2>Het gesprek — en twintig seconden notitie</h2>
+    <p class="lead">Het gesprek is volledig mensenwerk: behoefte, vertrouwen, bezwaren. Daarna typt de verkoper niets. Hij spreekt in.</p>
+  </div>
+  <div class="grid two">
+    <div class="card phone">
+      <div class="avatar">VB</div>
+      <div><strong>Vandenbroucke Bouw BV</strong> · zaakvoerder</div>
+      <div class="timer" id="callTimer">Gesprek beëindigd · 07:40</div>
+      <div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="btn-row" style="margin-block-start:.2rem">
+        <button type="button" class="btn amber" id="recordBtn">🎙 Spreek notitie in</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Spraaknotitie · 09:48</h3>
+      <div class="voice" id="voiceBox"><span style="color:var(--muted)">Druk op "Spreek notitie in" — dit is wat de verkoper zegt, letterlijk.</span></div>
+      <div class="btn-row">
+        <button type="button" class="btn" id="processBtn" disabled>Verwerk notitie →</button>
+      </div>
+      <p style="font-size:.85rem;color:var(--muted);margin-block-start:.8rem">Geen velden, geen dropdowns, geen "later invullen". De notitie is de invoer; de agent haalt er feiten, onzekerheden en vervolgacties uit.</p>
+    </div>
+  </div>
+  <div class="callout"><strong>Kort gezegd</strong>Verkopen blijft mensenwerk. Het typwerk erna verdwijnt.</div>
+</section>
+
+<!-- 5 · DE NASLEEP -->
+<section class="scene" data-scene="5">
+  <div class="scene-head">
+    <span class="clock">09:49</span><h2>De nasleep — gedaan, ter goedkeuring</h2>
+    <p class="lead">Eén notitie, vier resultaten. Alles herleidbaar naar wat er letterlijk gezegd is. Niets verzonnen, niets beloofd.</p>
+  </div>
+  <div class="grid two">
+    <div class="card reveal">
+      <h3>1 · CRM-update</h3>
+      <dl class="kv">
+        <dt>Status</dt><dd>Later — interesse in de 50-drempel</dd>
+        <dt>Uitkomst</dt><dd>Zaakvoerder gesproken · nu geen tijd</dd>
+        <dt>Volgende stap</dt><dd>Terugbellen tweede helft november</dd>
+        <dt>Gevraagd</dt><dd>Overzicht per mail</dd>
+        <dt>Onzeker</dt><dd>Geen exacte datum genoemd → periode, geen dag</dd>
+      </dl>
+      <p class="status" style="margin-block-start:.6rem">✓ Weggeschreven · 09:49 · bron: spraaknotitie</p>
+    </div>
+    <div class="card reveal">
+      <h3>2 · Conceptmail</h3>
+      <div class="mail">
+        <div class="hdr">Aan: zaakvoerder Vandenbroucke Bouw BV · Van: verkoper Straff<br>Onderwerp: Wat verandert boven 50 medewerkers — het overzicht dat ik beloofde</div>
+        <p>Dag [voornaam],</p>
+        <p>Bedankt voor het korte gesprek daarnet. Zoals beloofd het overzicht van wat er verandert nu jullie boven de 50 medewerkers zitten: sociale verkiezingen in 2028, het CPBW, de vertrouwenspersoon en de keuze rond de preventieadviseur.</p>
+        <p>Ik bel je zoals afgesproken in de tweede helft van november opnieuw. Tot dan.</p>
+      </div>
+      <div class="btn-row" style="margin-block-start:.6rem">
+        <button type="button" class="btn" id="approveBtn">Goedkeuren en verzenden</button>
+        <button type="button" class="btn secondary" id="editBtn">Aanpassen</button>
+      </div>
+      <p class="status hidden" id="sentNote">✓ Verzonden 09:52 · gelogd in CRM · bijlage: door Straff goedgekeurd overzicht "Wat verandert boven 50 medewerkers"</p>
+    </div>
+    <div class="card reveal">
+      <h3>3 · Terugbeltaak</h3>
+      <dl class="kv">
+        <dt>Wanneer</dt><dd>Week 47–48 (tweede helft november)</dd>
+        <dt>Venster</dt><dd>di–do · 9u30–11u30 (beste bereikbaarheid)</dd>
+        <dt>Context bij de taak</dt><dd>Dossier + deze notitie + de verzonden mail</dd>
+        <dt>Als het signaal verandert</dt><dd>Bv. 5e vacature of Staatsblad-publicatie → eerder voorstellen</dd>
+      </dl>
+    </div>
+    <div class="card reveal">
+      <h3>4 · Gepauzeerd</h3>
+      <ul>
+        <li>Geen extra belpogingen of mails tot de terugbeltaak</li>
+        <li>Een inkomend antwoord onderbreekt de planning meteen</li>
+        <li>Een "nee, bedankt" stopt het traject en wordt gelogd met reden</li>
+      </ul>
+      <div class="callout green" style="margin-block-end:0"><strong>Wat de agent níét deed</strong>Geen datum verzonnen bij "november" · geen belofte die niet in de notitie stond · geen prijs of voorstel geformuleerd · niets verzonden zonder goedkeuring.</div>
+    </div>
+  </div>
+  <div class="callout teal"><strong>Kort gezegd</strong>Het ondersteunende werk wordt voor je mensen gedaan — en jij houdt de controle.</div>
+  <div class="btn-row"><button type="button" class="btn" data-go="6">Naar vrijdag 16u →</button></div>
+</section>
+
+<!-- 6 · DE LEERLUS -->
+<section class="scene" data-scene="6">
+  <div class="scene-head">
+    <span class="clock">VR 16:00</span><h2>De leerlus: wat werkte deze maand?</h2>
+    <p class="lead">Niet alleen aantallen calls. Per trigger: gesprekken, bezoeken en de redenen voor een nee. Daaruit volgt één voorstel — geen autonome koerswijziging.</p>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>Gesprek → bezoek, per trigger (september, fictief)</h3>
+      <div class="trig"><div class="lbl">50-drempel</div><div class="track"><div class="fill" style="width:72%"></div></div><div class="pct">14 → 5 · 36%</div></div>
+      <div class="trig"><div class="lbl">Groeispurt</div><div class="track"><div class="fill" style="width:44%"></div></div><div class="pct">18 → 4 · 22%</div></div>
+      <div class="trig"><div class="lbl">Bestuurswissel</div><div class="track"><div class="fill" style="width:44%"></div></div><div class="pct">9 → 2 · 22%</div></div>
+      <div class="trig"><div class="lbl">Subsidie alleen</div><div class="track"><div class="fill low" style="width:10%"></div></div><div class="pct">22 → 1 · 5%</div></div>
+      <p style="font-size:.85rem;color:var(--muted);margin-block-start:.8rem">Ter vergelijking: de klassieke lijst haalde 1 op 5 (20%). Redenen voor nee bij "subsidie alleen": 14× "geen HR-vraag", 5× "al een partner", 3× "geen tijd".</p>
+    </div>
+    <div class="card">
+      <h3>Voorstel van de agent</h3>
+      <p><strong>Weeg "subsidie" lager, behalve in combinatie met personeelsgroei.</strong> Een subsidie op zich zegt weinig over een HR-behoefte; samen met groei wél (die combinatie haalde 3 op 6).</p>
+      <p><strong>Houd 10% van de acties voor nieuwe triggers</strong> — anders bevestigt het systeem alleen zijn eigen eerdere selectie.</p>
+      <div class="btn-row">
+        <button type="button" class="btn" id="applyBtn">Toepassen vanaf maandag</button>
+        <button type="button" class="btn secondary" id="waitBtn">Nog een maand data</button>
+      </div>
+      <p class="status hidden" id="applyNote"></p>
+    </div>
+  </div>
+  <div class="callout"><strong>Kort gezegd</strong>Niet alleen meer volume. Elke maand gerichter — en jij beslist.</div>
+  <div class="btn-row"><button type="button" class="btn" data-go="7">Wat dit betekent →</button></div>
+</section>
+
+<!-- 7 · WAT DIT BETEKENT -->
+<section class="scene" data-scene="7">
+  <div class="scene-head">
+    <span class="clock">EN DAN</span><h2>Wat dit voor Straff betekent</h2>
+    <p class="lead">Geen nieuwe tool naast het CRM. Een andere manier van werken, met dezelfde mensen.</p>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>Vier omkeringen</h3>
+      <table class="cmp">
+        <thead><tr><th>Vandaag</th><th>Met de Straff Outreach Agent</th></tr></thead>
+        <tbody>
+          <tr><td>De lijst bepaalt het werk</td><td>De HR-gebeurtenis bepaalt het werk</td></tr>
+          <tr><td>Kenmerken: sector, regio, grootte</td><td>Signalen + een HR-hypothese: waarom nú, waarom Straff</td></tr>
+          <tr><td>De verkoper zoekt, typt en plant</td><td>De verkoper praat; de agent doet de rest</td></tr>
+          <tr><td>Rapport achteraf</td><td>Het systeem leert per uitkomst en stelt voor</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Wat blijft, wat verschuift</h3>
+      <div class="grid two" style="gap:.8rem">
+        <div>
+          <h4 style="color:var(--amber)">Blijft van Straff</h4>
+          <ul><li>Het gesprek en het bezoek</li><li>De HR-kennis — nu gecodeerd in triggers</li><li>Elke commerciële beslissing</li><li>De klantrelatie</li></ul>
+        </div>
+        <div>
+          <h4 style="color:var(--teal)">Doet de agent</h4>
+          <ul><li>Selecteren op gebeurtenis</li><li>Dossier en opening voorbereiden</li><li>CRM, mails, terugbeltaken</li><li>Meten en voorstellen</li></ul>
+        </div>
+      </div>
+      <div class="callout" style="margin-block-end:0"><strong>Over de kost van AI</strong>Niet het model is de dure component — wel de verkopersuren die vandaag naar research en administratie gaan. De rekensom in jouw cijfers leg ik live naast deze demo.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-block-start:1rem">
+    <h3>Volgende stap: een pilot van acht weken die de juiste dingen bewijst</h3>
+    <div class="timeline">
+      <div class="ph"><b>Week 1–2 · Baseline</b>CRM-cijfers van zes maanden, één week tijdmeting, steekproef databronnen</div>
+      <div class="ph"><b>Week 3–4 · Meedraaien</b>Actierij en dossiers, verkopers scoren relevantie — niets wordt verzonden</div>
+      <div class="ph"><b>Week 5–8 · Vergelijken</b>Lijst-dagen versus trigger-dagen, zelfde verkopers, goedkeuring blijft bij de mens</div>
+      <div class="ph"><b>Week 9 · Beslissen</b>Efficiëntie, effectiviteit, kwaliteit, veiligheid, economie — op vooraf vastgelegde drempels</div>
+    </div>
+    <div class="callout teal" style="margin-block-end:0"><strong>Eén werkdag, zoals hierboven — maar dan met jouw mensen, jouw doelgroep en jouw cijfers.</strong>Scope, wat we meten en de afspraken bepalen we samen vooraf. Een half uur is genoeg om te beslissen of we die pilot starten.</div>
+  </div>
+  <div class="btn-row"><button type="button" class="btn secondary" data-go="0">↺ Opnieuw bekijken</button></div>
+</section>
+
+</main>
+
+<footer class="nav">
+  <button type="button" class="btn secondary" id="prevBtn">← Vorige</button>
+  <span class="counter" id="counter">1 / 8</span>
+  <button type="button" class="btn" id="nextBtn">Volgende →</button>
+</footer>
+<footer class="note">Demo door Joran De Clercq · FIKz · september 2026 · Alle bedrijven, personen, signalen en cijfers zijn fictief en dienen ter illustratie · Geen koppeling met systemen van Straff of derden.</footer>
+
+<script>
+(function(){
+  var scenes = Array.prototype.slice.call(document.querySelectorAll('.scene'));
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll('nav.steps button'));
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var counter = document.getElementById('counter');
+  var current = 0;
+  var maxSeen = 0;
+
+  function show(i){
+    if(i < 0 || i >= scenes.length) return;
+    current = i;
+    if(i > maxSeen) maxSeen = i;
+    scenes.forEach(function(s, idx){ s.classList.toggle('active', idx === i); });
+    navBtns.forEach(function(b, idx){
+      if(idx === i){ b.setAttribute('aria-current','step'); } else { b.removeAttribute('aria-current'); }
+      b.classList.toggle('done', idx < maxSeen && idx !== i);
+    });
+    counter.textContent = (i+1) + ' / ' + scenes.length;
+    prevBtn.disabled = (i === 0);
+    nextBtn.disabled = (i === scenes.length - 1);
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(i === 5){ revealCards(); }
+  }
+
+  function revealCards(){
+    var cards = scenes[5].querySelectorAll('.reveal');
+    cards.forEach(function(c){ c.classList.remove('in'); });
+    cards.forEach(function(c, k){ setTimeout(function(){ c.classList.add('in'); }, 250 + k*450); });
+  }
+
+  navBtns.forEach(function(b){
+    b.addEventListener('click', function(){ show(parseInt(b.getAttribute('data-step'), 10)); });
+  });
+  Array.prototype.slice.call(document.querySelectorAll('[data-go]')).forEach(function(b){
+    b.addEventListener('click', function(){ show(parseInt(b.getAttribute('data-go'), 10)); });
+  });
+  prevBtn.addEventListener('click', function(){ show(current - 1); });
+  nextBtn.addEventListener('click', function(){ show(current + 1); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ show(current + 1); }
+    if(e.key === 'ArrowLeft'){ show(current - 1); }
+  });
+
+  /* Scene 4: voice note */
+  var recordBtn = document.getElementById('recordBtn');
+  var processBtn = document.getElementById('processBtn');
+  var voiceBox = document.getElementById('voiceBox');
+  var wave = document.getElementById('wave');
+  var transcript = 'Zaakvoerder gesproken. Nu geen tijd, wel getriggerd door die 50-drempel. Wil een overzicht per mail. Terugbellen tweede helft november.';
+  var typing = false;
+
+  recordBtn.addEventListener('click', function(){
+    if(typing) return;
+    typing = true;
+    recordBtn.disabled = true;
+    wave.classList.add('on');
+    voiceBox.innerHTML = '<span id="typed"></span><span class="cursor"></span>';
+    var typed = document.getElementById('typed');
+    var k = 0;
+    var timer = setInterval(function(){
+      k++;
+      typed.textContent = transcript.slice(0, k);
+      if(k >= transcript.length){
+        clearInterval(timer);
+        wave.classList.remove('on');
+        var cur = voiceBox.querySelector('.cursor'); if(cur){ cur.remove(); }
+        var meta = document.createElement('div');
+        meta.style.cssText = 'margin-top:.6rem;font-size:.8rem;color:var(--muted)';
+        meta.textContent = '0:19 · opgeslagen bij het dossier · de agent leest mee';
+        voiceBox.appendChild(meta);
+        processBtn.disabled = false;
+        typing = false;
+      }
+    }, 28);
+  });
+  processBtn.addEventListener('click', function(){ show(5); });
+
+  /* Scene 5: approve mail */
+  var approveBtn = document.getElementById('approveBtn');
+  var editBtn = document.getElementById('editBtn');
+  var sentNote = document.getElementById('sentNote');
+  approveBtn.addEventListener('click', function(){
+    approveBtn.disabled = true; editBtn.disabled = true;
+    approveBtn.textContent = 'Goedgekeurd';
+    sentNote.classList.remove('hidden');
+  });
+  editBtn.addEventListener('click', function(){
+    var mail = scenes[5].querySelector('.mail');
+    var note = document.createElement('p');
+    note.style.cssText = 'font-size:.85rem;color:var(--muted);margin:.5rem 0 0';
+    note.textContent = 'In de echte versie past de verkoper de tekst hier aan; de agent onthoudt de voorkeur voor volgende mails.';
+    if(!mail.querySelector('.edit-note')){ note.className = 'edit-note'; mail.appendChild(note); }
+  });
+
+  /* Scene 6: apply proposal */
+  var applyBtn = document.getElementById('applyBtn');
+  var waitBtn = document.getElementById('waitBtn');
+  var applyNote = document.getElementById('applyNote');
+  applyBtn.addEventListener('click', function(){
+    applyBtn.disabled = true; waitBtn.disabled = true;
+    applyNote.textContent = '✓ Toegepast vanaf maandag · "subsidie alleen" weegt lager · 10% van de acties blijft verkenning · beslissing gelogd met datum en naam.';
+    applyNote.classList.remove('hidden');
+  });
+  waitBtn.addEventListener('click', function(){
+    applyBtn.disabled = true; waitBtn.disabled = true;
+    applyNote.textContent = '✓ Genoteerd · de agent komt hier volgende maand op terug met dubbele data — geen autonome koerswijziging.';
+    applyNote.classList.remove('hidden');
+  });
+
+  show(0);
+})();
+</script>
+</body>
+</html>
